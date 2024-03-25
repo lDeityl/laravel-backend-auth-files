@@ -13,8 +13,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-
-        $validator = Validator::make($request -> all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|min:3',
             'first_name' => 'required',
@@ -22,7 +21,7 @@ class AuthController extends Controller
         ]);
 
         if($validator -> fails()){
-            return response() -> json([
+            return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->toArray(),
             ], 422);
@@ -46,14 +45,13 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-
-        $validator = Validator::make($request -> all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if($validator -> fails()){
-            return response() -> json([
+        if ($validator -> fails()) {
+            return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->toArray(),
             ], 422);
@@ -77,21 +75,22 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request){
-        $user= $request->user();
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
         if($user){
             $user->tokens()->delete();
             return response()->json([
-                'success'=>true,
+                'success' => true,
                 'message' => 'Logout',
             ], 200);
         }
         else {
             return response()->json([
-                'success'=>true,
+                'success' => false,
                 'message' => 'User is not logged in',
             ], 401);
         }
     }
-
 }
